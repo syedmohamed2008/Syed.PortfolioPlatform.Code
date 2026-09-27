@@ -1,0 +1,130 @@
+﻿@using Syed.PortfolioPlatform.Application.DTOs.Articles
+@model List<ArticleDto>?
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    var role = Context.Session?.GetString("UserRole");
+    var totalArticles = Model?.Count ?? 0;
+}
+
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-1">Dashboard</h4>
+        @if (!string.IsNullOrEmpty(role))
+        {
+            <small class="text-muted">Welcome back, @role</small>
+        }
+    </div>
+</div>
+
+<div class="row g-4">
+
+    <!-- Total Articles (Primary Stat Card) -->
+    <div class="col-xl-3 col-md-6">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+
+                <div>
+                    <p class="text-muted small text-uppercase mb-2">
+                        Total Articles
+                    </p>
+                    <h3 class="fw-bold mb-0">@totalArticles</h3>
+                </div>
+
+                <div class="bg-primary bg-opacity-10 p-3 rounded-3">
+                    <i class="bi bi-file-earmark-text fs-4 text-primary"></i>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Articles -->
+    <div class="col-xl-3 col-md-6">
+        <a asp-area="Admin"
+           asp-controller="Articles"
+           asp-action="Index"
+           class="text-decoration-none text-dark">
+
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <p class="text-muted small text-uppercase mb-2">
+                            Articles
+                        </p>
+                        <h6 class="fw-semibold mb-0">
+                            Manage Articles
+                        </h6>
+                    </div>
+
+                    <div class="bg-success bg-opacity-10 p-3 rounded-3">
+                        <i class="bi bi-pencil-square fs-4 text-success"></i>
+                    </div>
+
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Manage Categories -->
+    <div class="col-xl-3 col-md-6">
+        <a asp-area="Admin"
+           asp-controller="Categories"
+           asp-action="Index"
+           class="text-decoration-none text-dark">
+
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <p class="text-muted small text-uppercase mb-2">
+                            Categories
+                        </p>
+                        <h6 class="fw-semibold mb-0">
+                            Manage Categories
+                        </h6>
+                    </div>
+
+                    <div class="bg-warning bg-opacity-10 p-3 rounded-3">
+                        <i class="bi bi-folder fs-4 text-warning"></i>
+                    </div>
+
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Manage Tags -->
+    <div class="col-xl-3 col-md-6">
+        <a asp-area="Admin"
+           asp-controller="Tags"
+           asp-action="Index"
+           class="text-decoration-none text-dark">
+
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <p class="text-muted small text-uppercase mb-2">
+                            Tags
+                        </p>
+                        <h6 class="fw-semibold mb-0">
+                            Manage Tags
+                        </h6>
+                    </div>
+
+                    <div class="bg-danger bg-opacity-10 p-3 rounded-3">
+                        <i class="bi bi-tags fs-4 text-danger"></i>
+                    </div>
+
+                </div>
+            </div>
+        </a>
+    </div>
+
+</div>

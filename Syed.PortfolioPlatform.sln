@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.4.11605.240 stable
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syed.PortfolioPlatform.Domain", "Syed.PortfolioPlatform.Domain\Syed.PortfolioPlatform.Domain.csproj", "{4DC82C61-6A77-4DEB-AAB9-E111A54E75DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syed.PortfolioPlatform.Infrastructure", "Syed.PortfolioPlatform.Infrastructure\Syed.PortfolioPlatform.Infrastructure.csproj", "{B26B6185-9974-4D2B-8A04-3863B92172B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syed.PortfolioPlatform.API", "Syed.PortfolioPlatform.API\Syed.PortfolioPlatform.API.csproj", "{F93AB769-A603-4AA6-8598-5D90EE04585D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syed.PortfolioPlatform.Web", "Syed.PortfolioPlatform.Web\Syed.PortfolioPlatform.Web.csproj", "{D03A2B98-ED75-4170-82CF-5184F708F70A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syed.PortfolioPlatform.Application", "Syed.PortfolioPlatform.Application\Syed.PortfolioPlatform.Application.csproj", "{22FBA6FF-5D3B-4C9C-BA91-5C4A72A2139D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syed.PortfolioPlatform.Functions.Notifications", "Syed.PortfolioPlatform.Functions.Notifications\Syed.PortfolioPlatform.Functions.Notifications.csproj", "{1B47B7C4-BB67-4FC8-9C1A-7DAE3D43C017}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DC82C61-6A77-4DEB-AAB9-E111A54E75DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DC82C61-6A77-4DEB-AAB9-E111A54E75DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DC82C61-6A77-4DEB-AAB9-E111A54E75DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DC82C61-6A77-4DEB-AAB9-E111A54E75DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B26B6185-9974-4D2B-8A04-3863B92172B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B26B6185-9974-4D2B-8A04-3863B92172B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B26B6185-9974-4D2B-8A04-3863B92172B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B26B6185-9974-4D2B-8A04-3863B92172B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F93AB769-A603-4AA6-8598-5D90EE04585D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F93AB769-A603-4AA6-8598-5D90EE04585D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F93AB769-A603-4AA6-8598-5D90EE04585D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F93AB769-A603-4AA6-8598-5D90EE04585D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D03A2B98-ED75-4170-82CF-5184F708F70A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D03A2B98-ED75-4170-82CF-5184F708F70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D03A2B98-ED75-4170-82CF-5184F708F70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D03A2B98-ED75-4170-82CF-5184F708F70A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22FBA6FF-5D3B-4C9C-BA91-5C4A72A2139D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22FBA6FF-5D3B-4C9C-BA91-5C4A72A2139D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22FBA6FF-5D3B-4C9C-BA91-5C4A72A2139D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22FBA6FF-5D3B-4C9C-BA91-5C4A72A2139D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B47B7C4-BB67-4FC8-9C1A-7DAE3D43C017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B47B7C4-BB67-4FC8-9C1A-7DAE3D43C017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B47B7C4-BB67-4FC8-9C1A-7DAE3D43C017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B47B7C4-BB67-4FC8-9C1A-7DAE3D43C017}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C632709B-7051-4F3A-BFE1-CA7A4634C8A2}
+	EndGlobalSection
+EndGlobal

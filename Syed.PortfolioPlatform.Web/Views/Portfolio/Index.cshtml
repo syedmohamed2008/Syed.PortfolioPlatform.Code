@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Portfolio";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div class="toast show align-items-center text-bg-success border-0">
+            <div class="d-flex">
+                <div class="toast-body">
+                    @TempData["Success"]
+                </div>
+                <button type="button"
+                        class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast">
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+<link rel="stylesheet" href="~/css/portfolio.css" />
+<div class="container">
+
+    <partial name="_Hero" />
+
+    <partial name="_Skills" />
+
+    <partial name="_Experience" />
+
+    <partial name="_Projects" />
+
+    <partial name="_Articles" />
+
+    <partial name="_Certifications" />
+
+    <partial name="_Contact" />
+
+</div>

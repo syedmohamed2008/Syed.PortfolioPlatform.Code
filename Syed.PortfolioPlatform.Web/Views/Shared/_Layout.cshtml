@@ -1,0 +1,268 @@
+﻿@using Syed.PortfolioPlatform.Web.Configurations
+@inject PortfolioSettings Settings
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>@ViewData["Title"] | @Settings.FullName - .NET Tech Lead</title>
+
+    <meta name="description" content="@(ViewData["MetaDescription"] ?? "Syed Mohamed - Senior .NET Developer with 19+ years experience in C#, ASP.NET MVC, Web API, Angular.")" />
+
+    <meta name="keywords"
+          content=".NET developer, C# developer, ASP.NET MVC developer, Web API developer, Angular developer portfolio" />
+
+    <meta name="author" content="Syed Mohamed" />
+
+    @* LinkedIn Preview (Open Graph) *@
+    <meta property="og:title" content="@ViewData["Title"]" />
+    <meta property="og:description" content="@ViewData["MetaDescription"]" />
+    <meta property="og:url" content="https://jntech.in" />
+    <meta property="og:type" content="website" />
+
+
+
+    
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <style>
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .content-wrapper {
+            margin-left: 250px;
+        }
+
+        /* Responsive Fix */
+        @@media (max-width: 992px) {
+            .sidebar
+
+        {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+
+        .content-wrapper {
+            margin-left: 0;
+        }
+
+        }
+    </style>
+
+     <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KXHX3XYXSM"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+        gtag('config', 'G-KXHX3XYXSM');
+    </script>
+
+     <!-- https://clarity.microsoft.com/   -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "vrxd2ny7dc");
+    </script>
+
+    @* Add Developer Profile Schema *@
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@graph": [
+            {
+              "@@type": "Person",
+              "@@id": "https://jntech.in/#person",
+              "name": "Syed Mohamed",
+              "url": "https://jntech.in",
+              "jobTitle": ".NET Lead",
+              "description": "Senior .NET Developer with 19+ years of experience in C#, ASP.NET MVC, Web API, React and Angular.",
+              "sameAs": [
+                "https://www.linkedin.com/in/syed-md",
+                "https://github.com/syedmohamed2008"
+              ]
+            },
+            {
+              "@@type": "WebSite",
+              "@@id": "https://jntech.in/#website",
+              "url": "https://jntech.in",
+              "name": "Syed Mohamed Portfolio",
+              "publisher": {
+                "@@id": "https://jntech.in/#person"
+              }
+            }
+          ]
+        }
+    </script>
+
+
+</head>
+
+
+<body class="dark-theme">
+    <header class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <a href="/"> @Settings.FullName</a>
+            </div>
+
+            <nav class="nav-links" id="navLinks">
+                <a href="/"
+                   class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active-menu" : "")">
+                    Home
+                </a>
+
+                <!-- Portfolio -->
+                <a asp-controller="Portfolio"
+                   asp-action="Index"
+                   class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Portfolio" ? "active-menu" : "")">
+                    Portfolio
+                </a>
+
+                <!-- Articles -->
+                <a asp-controller="Articles"
+                   asp-action="Index"
+                   class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Articles" ? "active-menu" : "")">
+                    Articles
+                </a>
+
+                <!-- Contact (Section Scroll) -->
+                <a href="#contact"
+                   class="nav-link @(ViewContext.RouteData.Values["fragment"]?.ToString() == "contact" ? "active-menu" : "")">
+                    Contact
+                </a>
+            </nav>
+
+            <!-- Social Icons -->
+            <div class="header-social">
+                <a href="@Settings.LinkedInUrl" target="_blank">
+                    <i class="bi bi-linkedin"></i>
+                </a>
+                <a href="@Settings.GitHubUrl" target="_blank">
+                    <i class="bi bi-github"></i>
+                </a>
+                <a href="#" target="_blank" title="Coming Soon">
+                    <i class="bi bi-youtube"></i>
+                </a>
+            </div>
+
+            <button class="nav-toggle" id="navToggle">☰</button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+
+            <!-- Column 1 -->
+            <div class="footer-column">
+                <h5 class="footer-logo">@Settings.FullName </h5>
+                <p class="footer-description">
+                    .NET Developer specializing in building scalable web applications, clean architecture solutions, and enterprise-grade APIs. Passionate about writing maintainable, high-quality code and sharing practical development insights.
+                </p>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-controller="Articles" asp-action="Index">Articles</a></li>
+                    @* <li><a asp-controller="Home" asp-action="Contact">Contact</a></li> *@
+                    <a href="#contact">Contact</a>
+                </ul>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="footer-column">
+                <h4>Connect</h4>
+                <ul class="footer-social">
+                    <li>
+                        <a href="@Settings.LinkedInUrl" target="_blank">
+                            <i class="bi bi-linkedin"></i> LinkedIn
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Settings.GitHubUrl" target="_blank">
+                            <i class="bi bi-github"></i> GitHub
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" target="_blank" title="Coming Soon">
+                            <i class="bi bi-youtube"></i> YouTube
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            © @DateTime.Now.Year Syed Portfolio Platform. All rights reserved.
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    @RenderSection("Scripts", required: false)
+
+    <script>
+        const navToggle = document.getElementById("navToggle");
+        const navLinks = document.getElementById("navLinks");
+
+        navToggle.addEventListener("click", () => {
+            navLinks.classList.toggle("active");
+        });
+    </script>
+
+    <script>
+    const faders = document.querySelectorAll(".fade-in");
+
+    const appearOptions = {
+        threshold: 0.2
+    };
+
+    const appearOnScroll = new IntersectionObserver(function (entries, observer) {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+        });
+    }, appearOptions);
+
+    faders.forEach(fader => {
+        appearOnScroll.observe(fader);
+    });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+
+
+</body>
+</html>

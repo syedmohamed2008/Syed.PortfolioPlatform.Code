@@ -1,0 +1,100 @@
+﻿@using Syed.PortfolioPlatform.Application.DTOs.Articles
+@using System.Net
+@using System.Text.RegularExpressions
+
+@model List<ArticleDto>
+
+  
+@foreach (var article in Model)
+{
+    
+    var coverClass = Random.Shared.Next(3) switch
+    {
+        1 => "cover two",
+        2 => "cover three",
+        _ => "cover"
+    };
+
+
+    var detailsUrl = Url.Action(
+        "Details",
+        "Articles",
+        new { slug = article.Slug });
+
+    var plainText = Regex.Replace(
+        article.Content ?? string.Empty,
+        "<[^>]+>",
+        " ");
+
+    plainText = WebUtility.HtmlDecode(plainText);
+
+    plainText = Regex.Replace(
+        plainText,
+        @"\s+",
+        " ").Trim();
+
+    var summary = plainText.Length > 150
+        ? plainText[..150].TrimEnd() + "..."
+        : plainText;
+
+    var wordCount = string.IsNullOrWhiteSpace(plainText)
+        ? 0
+        : plainText.Split(
+            ' ',
+            StringSplitOptions.RemoveEmptyEntries).Length;
+
+    var readingTime = Math.Max(1, (int)Math.Ceiling(wordCount / 200d));
+
+
+  <article class="card">
+       <a href="@detailsUrl"
+           class="article-card-image-link"
+           aria-label="Read @article.Title">
+               <div class="@coverClass">
+                @if (article.CreatedOn >= DateTime.UtcNow.AddDays(-7))
+                {
+                  <span class="badge new">✦ NEW ARTICLE</span>
+                }
+                  <div class="cover-art">
+                     <strong>@article.Title</strong> @* <small>Understand API responses</small> *@
+                  </div>
+               </div>
+               <div class="body">
+                  <div class="meta">
+                     <time>@article.CreatedOn.ToString("dd MMMM yyyy")</time><i class="dot"></i
+                     ><span> @article.ReadingTime min read</span>
+                  </div>
+
+                   @if (!string.IsNullOrWhiteSpace(article.CategoryName))
+                    {
+                        <div class="category"> @article.CategoryName</div>
+                    }
+
+                  
+                  <h2 class="title">
+                     @article.Title
+                  </h2>
+                  <p class="desc">
+                       @if (!string.IsNullOrWhiteSpace(@summary))
+                {
+                   
+                        @summary
+                   
+                }
+                   
+                  </p>
+                  <div class="bottom">
+                      <a href="@detailsUrl" class="read">
+                        Read article →</a>
+                   <span class="extra">@string.Join(", ", article.Tags.Select(tag => tag.Name))</span>
+                  </div>
+               </div>
+               </a>
+            </article>
+
+
+
+        
+   
+
+}

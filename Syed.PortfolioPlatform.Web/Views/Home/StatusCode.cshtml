@@ -1,0 +1,19 @@
+﻿@{
+    var code = ViewBag.StatusCode;
+}
+
+<div class="text-center mt-5">
+    <h1>@code</h1>
+
+    @if (code == 404)
+    {
+        <h3>Page Not Found</h3>
+        <p>The page you are looking for doesn't exist.</p>
+    }
+    else
+    {
+        <h3>Error Occurred</h3>
+    }
+
+    <a href="/" class="btn btn-primary">Go Home</a>
+</div>

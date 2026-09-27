@@ -1,0 +1,74 @@
+﻿@{
+    var imagePath = Url.Content("~/images/syed.png");
+}
+
+<section class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <!-- ✅ Content (Left Side) -->
+            <div class="col-md-7">
+
+                <h1 class="fw-bold">Hello, I'm Syed</h1>
+
+                <h4 class="hero-title">
+                    .NET Lead specialized in
+                    <span>Web API</span>,
+                    <span>SQL</span> and
+                    <span>MVC</span>
+                </h4>
+
+               <partial name="_Techstack" />
+
+                <p class="text-muted mt-3">
+                    Passionate developer building enterprise applications
+                    with clean architecture and modern technologies.
+                </p>
+
+                <div class="mt-4">
+
+                    <a asp-controller="Articles"
+                       asp-action="Index"
+                       class="btn btn-primary me-2">
+                        View Articles
+                    </a>
+
+                    <a href="#contact" class="btn btn-outline-dark me-2">
+                        Contact Me
+                    </a>
+
+                   @*  <a asp-controller="Contact"
+                       asp-action="Index"
+                       class="btn btn-outline-dark me-2">
+                        Contact Me
+                    </a> *@
+
+                    <a href="~/files/resume.pdf"
+                       class="btn btn-outline-primary"
+                       download
+                       target="_blank"
+                       onclick="gtag('event', 'resume_download', {
+                            event_category: 'portfolio',
+                            event_label: 'resume_pdf'
+                            });">
+
+                        <i class="bi bi-download"></i>
+                        Download Resume
+
+                    </a>
+
+                </div>
+
+            </div>
+
+           <div class="col-md-5 text-center mt-4 mt-md-0">
+
+                 <img src="@imagePath"
+                     class="img-fluid rounded-circle shadow"
+                     style="width:280px;height:280px;object-fit:cover;" />
+
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,189 @@
+﻿@using Syed.PortfolioPlatform.Web.Configurations
+@inject PortfolioSettings Settings
+@model HomeViewModel
+@{
+    ViewData["Title"] = @Settings.FullName + " | .NET Tech Lead";
+}
+
+@{
+    var imagePath = Url.Content("~/images/syed.png");
+}
+
+
+<section class="hero fade-in">
+    <div class="container hero-container">
+        <div class="hero-content">
+            <span class="hero-tag">.NET TECHNICAL LEAD</span>
+
+            <h1>@Settings.FullName</h1>
+
+            <partial name="_Techstack" />
+
+            <h4>19+ Years | ASP.NET Core | C# | Web API | SQL Server | Angular</h4>
+
+            <p>
+                .NET Technical Lead with 19+ years of experience designing, developing, modernizing, and supporting enterprise applications across banking and pension domains. Experienced in technical leadership, solution design, RESTful APIs, performance optimization, developer mentoring, and production support.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="/Portfolio" class="btn btn-primary">View Portfolio</a>
+                @* <a href="/Articles" class="btn btn-outline">Read Articles</a> *@
+                <a asp-controller="Articles"
+                   asp-action="Index"
+                   class="btn btn-outline">
+                    Read Articles
+                </a>
+
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <img src="@imagePath" alt=@Settings.FullName class="hero-profile-img" />
+        </div>
+    </div>
+</section>
+
+<section class="section light-bg fade-in">
+    <div class="container">
+        <h2 class="section-title text-center">Professional Experience</h2>
+
+        <div class="experience-grid">
+            <div>
+                <h3>19+ Years</h3>
+                <p>Enterprise Application Development</p>
+            </div>
+
+            <div>
+                <h3>Leadership</h3>
+                <p>Led and Mentored Enterprise Development Teams</p>
+            </div>
+
+            <div>
+                <h3>Banking & Pension</h3>
+                <p>Enterprise Domain Experience</p>
+            </div>
+
+            <div>
+                <h3>60% Reduction</h3>
+                <p>Manual Deployment Effort Through CI/CD</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section fade-in">
+    <div class="container">
+        <h2 class="section-title text-center">Core Expertise</h2>
+
+        <div class="grid-4">
+             <div class="card">
+                <h3>Technical Leadership</h3>
+                <p>Team leadership, developer mentoring, code reviews, task planning, technical guidance, and delivery support.</p>
+            </div>
+            
+            <div class="card">
+                <h3>Enterprise Application Development</h3>
+                <p>Design and development of scalable enterprise applications using C#, ASP.NET Core, Web API, and SQL Server.</p>
+            </div>
+            
+            <div class="card">
+                <h3>Application Modernization</h3>
+                <p>Modernizing legacy applications using current .NET technologies, clean coding practices, and maintainable architecture.</p>
+            </div>
+
+            <div class="card">
+                <h3>API Architecture</h3>
+                <p>Secure RESTful API design, authentication, validation, logging, caching, rate limiting, and system integration.</p>
+            </div>
+
+            <div class="card">
+                <h3>CI/CD and Production Support</h3>
+                <p>Automated deployment pipelines, production releases, root-cause analysis, and critical-issue resolution.</p>
+            </div>
+
+            <div class="card">
+                <h3>SQL Server and Performance</h3>
+                <p>Database design, stored procedures, query optimization, troubleshooting, and application-performance improvement.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section light-bg fade-in">
+    <div class="container">
+        <h2 class="section-title text-center">About Me</h2>
+
+        <div >
+            <div class="card article-card">
+                <p>
+                    I am a .NET Technical Lead with 19+ years of experience delivering enterprise applications using Microsoft technologies.
+                </p>
+                <p>
+                    My expertise includes C#, ASP.NET Core, Web API, Entity Framework Core, SQL Server, solution design, application modernization, code reviews, performance optimization, production support, and developer mentoring.
+                </p>
+                <p>
+                    I have led an eight-member development team and worked closely with product owners, business analysts, QA engineers, and stakeholders to deliver reliable business-critical applications.
+                </p>
+                <p>
+                    My domain experience includes banking and pension administration systems, where security, data integrity, performance, and application availability are essential.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="section fade-in">
+    <div class="container">
+        <h2 class="section-title text-center">Latest Articles</h2>
+        <p>Practical tutorials, production-oriented examples, and interview guidance covering .NET, Web API, SQL Server, Angular, Azure, and software architecture.</p>
+        <div class="grid-3">
+            @foreach (var article in Model.LatestArticles)
+            {
+                <div class="card article-card">
+
+                    @if (!string.IsNullOrEmpty(article.ImageUrl))
+                    {
+                        <div class="article-image">
+                            <img src="@article.ImageUrl" />
+                        </div>
+                    }
+                    <h3>@article.Title</h3>
+                    <p>
+                         @*  @Html.Raw(article.Content.Length > 120
+                                            ? article.Content.Substring(0, 120) + "..."
+                                            : article.Content) *@
+                        @{
+                            var plainText = System.Text.RegularExpressions.Regex
+                            .Replace(article.Content ?? "", "<.*?>", "");
+
+                            var summary = plainText.Length > 150
+                            ? plainText.Substring(0, 150) + "..."
+                            : plainText;
+                        }
+
+                        <p class="article-row-summary">
+                            @summary
+                        </p>
+
+                        <a asp-controller="Articles"
+                           asp-action="Details"
+                           asp-route-slug="@article.Slug"
+                           class="read-more">
+                            Read More →
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+        <partial name="_Contact" />
+    </section>
+
+
+    <section class="section cta-section fade-in">
+        <div class="container text-center">
+            <h2>Looking to build scalable enterprise solutions?</h2>
+            <a href="#contact" class="btn btn-primary">Contact</a>
+        </div>
+    </section>

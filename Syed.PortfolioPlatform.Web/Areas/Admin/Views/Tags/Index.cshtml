@@ -1,0 +1,71 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using Syed.PortfolioPlatform.Application.DTOs.Tags
+@model List<TagDto>
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0 fw-semibold">Tags</h4>
+        <a asp-action="Create" class="btn btn-primary px-4">
+            + Create Tag
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-0">
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width:70%;">Name</th>
+                                <th class="text-end" style="width:30%;">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var tag in Model)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">
+                                        @tag.Name
+                                    </td>
+
+                                    <td class="text-end">
+                                        <a asp-action="Edit"
+                                           asp-route-id="@tag.Id"
+                                           class="btn btn-sm btn-outline-primary me-2">
+                                            Edit
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@tag.Id"
+                                           class="btn btn-sm btn-outline-danger"
+                                           onclick="return confirm('Are you sure you want to delete this tag?');">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="p-4 text-center text-muted">
+                    No tags available.
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

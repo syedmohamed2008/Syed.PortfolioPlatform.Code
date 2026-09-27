@@ -1,0 +1,57 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - Dev
+
+pr: none
+
+pool:
+  name: Default
+
+variables:
+  buildConfiguration: 'Release'
+
+stages:
+
+- stage: Dev
+  displayName: Build & Deploy to Dev
+
+  jobs:
+  - deployment: DeployDev
+    environment: dev
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - script: dotnet --version
+            displayName: Check .NET Version
+
+          - script: dotnet restore
+            displayName: Restore Packages
+
+          - script: dotnet build --configuration $(buildConfiguration)
+            displayName: Build Solution
+
+          - script: dotnet publish Syed.PortfolioPlatform.API/Syed.PortfolioPlatform.API.csproj --configuration Release --output "$(Build.ArtifactStagingDirectory)/api"
+            displayName: Publish API
+
+          - script: dotnet publish Syed.PortfolioPlatform.Web/Syed.PortfolioPlatform.Web.csproj --configuration Release --output "$(Build.ArtifactStagingDirectory)/web"
+            displayName: Publish MVC
+
+          - task: AzureWebApp@1
+            displayName: Deploy API (Dev)
+            inputs:
+              azureSubscription: 'AzureServiceConnection'
+              appType: webApp
+              appName: 'syedportfolio-api'
+              package: '$(Build.ArtifactStagingDirectory)/api'
+
+          - task: AzureWebApp@1
+            displayName: Deploy Web (Dev)
+            inputs:
+              azureSubscription: 'AzureServiceConnection'
+              appType: webApp
+              appName: 'syedportfolio-web'
+              package: '$(Build.ArtifactStagingDirectory)/web'

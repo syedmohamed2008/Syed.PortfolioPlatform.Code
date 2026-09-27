@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jntech.com/sitemap.xml

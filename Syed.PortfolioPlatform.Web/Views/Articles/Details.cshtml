@@ -1,0 +1,250 @@
+﻿@using Syed.PortfolioPlatform.Web.Configurations
+@using System.Text.RegularExpressions
+@using System.Net
+@using Syed.PortfolioPlatform.Web.ViewModels.Articles
+@inject PortfolioSettings Settings
+@model ArticleDetailsViewModel
+
+@{
+    var articleUrl = $"{Context.Request.Scheme}://{Context.Request.Host}{Url.Action("Details", "Articles", new { slug = Model.Article.Slug })}";
+}
+
+
+@{
+    var waarticleUrl = $"{Context.Request.Scheme}://{Context.Request.Host}{Url.Action("Details", "Articles", new { slug = Model.Article.Slug })}";
+    var message = $"{Model.Article.Title} - {waarticleUrl}";
+    var encodedMessage = WebUtility.UrlEncode(message);
+    var plainText = Regex.Replace(Model.Article.Content ?? "", "<.*?>", "");
+    plainText = WebUtility.HtmlDecode(plainText);
+
+    var description = plainText.Length > 200
+        ? plainText.Substring(0, 200) + "..."
+        : plainText;
+}
+
+<meta property="og:title" content="@Model.Article.Title" />
+<meta property="og:description" content="@description" />
+<meta property="og:image" content="@Model.Article.ImageUrl" />
+<meta property="og:url" content="@articleUrl" />
+<meta property="og:type" content="article" />
+<meta name="author" content="@Settings.FullName" />
+<meta name="robots" content="index, follow" />
+
+<script type="application/ld+json">
+    {
+         "@@context": "https://schema.org",
+         "@@type": "TechArticle",
+         "headline":  @Html.Raw(Json.Serialize(Model.Article.Title)),
+         "image": "@Model.Article.ImageUrl",
+         "url": "@articleUrl",
+         "author": {
+           "@@type": "Person",
+           "name": "@Settings.FullName", 
+            "url": "@($"{Context.Request.Scheme}://{Context.Request.Host}/Portfolio")"
+         },
+         "datePublished": "@Model.Article.CreatedOn.ToString("yyyy-MM-dd")",
+         "about":  @Html.Raw(Json.Serialize(Model.Article.Title)),
+         "publisher": {
+           "@@type": "Organization",
+           "name": "@(Settings.FullName + " Portfolio")"
+         },
+         "mainEntityOfPage": {
+          "@@type": "WebPage",
+          "@@id": "@articleUrl"
+        }
+    }
+</script>
+
+
+
+
+<section class="article-detail-section">
+    <div class="detail-container">
+        <div>
+            <a asp-action="Index"
+                   asp-controller="Articles"
+                   class="back-link">
+                ← Back to Article List
+            </a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @if (!string.IsNullOrEmpty(Model.Article.YouTubeLink))
+            {
+                <a target="_blank" rel="noopener noreferrer"  
+                       href="@Model.Article.YouTubeLink"
+                       class="share-icon" >
+                    <img src="~/images/watchonyoutube.png" width="100" />
+                  
+                </a>
+            }
+
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Article.YouTubeLink))
+        {
+            <div class="ratio ratio-16x9">
+                <iframe src="@Model.Article.YouTubeLink.Replace("watch?v=", "embed/")"
+                        title="YouTube video"
+                        allowfullscreen>
+                </iframe>
+            </div>
+        }
+        else
+        {
+            <!-- Featured Image -->
+            <div class="detail-image">
+                <img src="@Model.Article.ImageUrl" alt="@Model.Article.Title" />
+            </div>
+
+        }
+
+        <div class="share-container">
+
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=@articleUrl"
+               target="_blank"
+               rel="noopener"
+               class="share-link">
+
+                <img src="~/images/linkedin_share.png"
+                     alt="Share on LinkedIn"
+                     class="share-icon" />
+            </a>
+
+            <a href="https://api.whatsapp.com/send?text=@encodedMessage"
+               target="_blank"
+               rel="noopener"
+               class="share-link">
+
+                <img src="~/images/whatsapp_share.png"
+                     alt="Share via WhatsApp"
+                     class="share-icon" />
+            </a>
+
+        </div>
+
+        @* <button onclick="window.print()">Save as PDF</button> *@
+        <!-- Title -->
+        <h1 class="detail-title">
+            @Model.Article.Title
+        </h1>
+        
+        <!-- Meta -->
+        <div class="detail-meta">
+
+            <span class="published-date">
+                <i class="bi bi-calendar3"></i>
+                Published on @Model.Article.CreatedOn.ToString("dd MMM yyyy")
+
+                <span class="meta-separator"> &nbsp;&nbsp;&nbsp; </span>
+                
+                <i class="bi bi-clock"></i>
+                @Model.ReadingTime min read
+            </span>
+
+            @if (Model.Article != null)
+            {
+                <span class="detail-category-badge">
+                    @Model.Article.CategoryName
+                </span>
+            }
+
+
+
+
+
+
+        </div>
+
+        @if (Model.Tags != null && Model.Tags.Any())
+        {
+            <div class="detail-tags">
+                @foreach (var articleTag in Model.Tags)
+                {
+                    <span class="tag-badge">
+                        @articleTag.Name
+                    </span>
+                }
+            </div>
+        }
+
+        <!-- Content -->
+        <div class="article-content">
+            @Html.Raw(Model.Article.Content)
+        </div>
+
+       
+
+        @if (!string.IsNullOrWhiteSpace(Model.Article.PDFLink))
+        {
+            <div class="article-pdf-preview">
+                <iframe src="/files/@Model.Article.PDFLink"
+                        width="100%"
+                        height="800"
+                        title="@Model.Article.Title PDF Preview"
+                        loading="lazy">
+                </iframe>
+            </div>
+
+            <a href="@Url.Content($"~/files/{Model.Article.PDFLink}")"
+               class="btn btn-outline-primary"
+               download
+               target="_blank">
+                <i class="bi bi-download"></i>
+                Download Here
+            </a>
+        }
+
+        @if (Model.RelatedArticles != null && Model.RelatedArticles.Count > 0)
+        {
+            <div class="related-articles">
+                <h3 class="related-title">
+                    <i class="bi bi-journal-text"></i>
+                    <span class="primary-text">Keep Learning</span>
+                    <span class="divider">-</span>
+                    <span class="secondary-text">More From This Category</span>
+                </h3>
+
+                <ul>
+                    @foreach (var related in Model.RelatedArticles)
+                    {
+                        <li>
+                            <a asp-controller="Articles"
+                               asp-action="Details"
+                               asp-route-id="@related.Slug">
+                                @related.Title
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+
+        <div class="back-bottom">
+            <a asp-action="Index"
+               asp-controller="Articles"
+               class="back-link">
+                ← Back to Article List
+            </a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @if (!string.IsNullOrEmpty(Model.Article.YouTubeLink))
+            {
+                <a target="_blank" rel="noopener noreferrer"
+                       href="@Model.Article.YouTubeLink"
+                       class="share-icon">
+                    <img src="~/images/watchonyoutube.png" width="100" />
+                  
+                </a>
+            }
+        </div>
+    </div>
+</section>
+
+<script>
+    document.querySelectorAll(".article-content table").forEach(table => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "article-table-scroll";
+
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+    });
+</script>

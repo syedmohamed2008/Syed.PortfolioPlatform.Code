@@ -1,0 +1,69 @@
+﻿@using Syed.PortfolioPlatform.Web.Configurations
+@inject PortfolioSettings Settings
+<section class="py-5">
+    <div class="container">
+
+        <h3 class="section-title mb-4">
+            Projects
+        </h3>
+
+        <div class="row g-4">
+
+            <!-- Project -->
+            <div class="col-md-6">
+                <div class="project-card">
+
+                    <!-- Image -->
+                    <div class="project-image">
+                        <img src="~/images/Portfolio-Project-Image.png" />
+                        <div class="overlay">
+                            <a href="#" class="overlay-btn">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="project-content">
+
+                        <h5>Portfolio Website</h5>
+
+                        <p>
+                            Enterprise-level Portfolio Platform built using .NET 8 with Clean Architecture principles, featuring an Admin Dashboard, Article Management, Category & Tag system, Contact Management, Structured Logging, Health Monitoring, and production-ready deployment on Windows hosting.
+                        </p>
+
+                        <!-- Tech Stack -->
+                        <div class="tech-stack">
+                            <span>.NET 8</span>
+                            <span>ASP.NET Core MVC</span>
+                            <span>Entity Framework Core</span>
+                            <span>LINQ</span>
+                            <span>Microsoft SQL Server</span>
+                            <span>Code-First Approach</span>
+                            <span>EF Core Migrations</span>
+                            <span>Bootstrap</span>
+                            <span>ASP.NET Core MVC</span>
+                            <span>ASP.NET Core MVC</span>
+                            <span>Clean Architecture (Domain / Application / Infrastructure / Web)</span>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="project-links mt-3">
+                            <a href="@Settings.GitHubUrl" target="_blank">
+                                GitHub
+                            </a>
+
+                            <a href="https://www.jntech.in" target="_blank">
+                                Live Demo
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>

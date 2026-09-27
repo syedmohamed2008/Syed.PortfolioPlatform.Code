@@ -1,0 +1,199 @@
+﻿@using System.Linq
+@using Syed.PortfolioPlatform.Web.ViewModels.Articles
+@model ArticleListViewModel
+
+
+<section class="section light-bg">
+    <div class="container">
+
+        <h1 class="page-title">Articles</h1>
+
+        <!-- Search -->
+        <form method="get" class="search-bar">
+
+            <input type="text"
+                   name="search"
+                   placeholder="Search articles..."
+                   value="@Model.Search" />
+
+            <!-- Category Dropdown -->
+            <select name="categoryId" id="categoryDropdown">
+                <option value="">All Categories</option>
+
+                @if (Model.Categories != null)
+                {
+                    foreach (var category in Model.Categories)
+                    {
+                        var selected = Model.CategoryId != null &&
+                        category.Id == Model.CategoryId;
+
+                        <option value="@category.Id" selected="@selected">
+                            @category.Name
+                        </option>
+                    }
+                }
+
+            </select>
+            <select name="tagId" id="tagDropdown">
+                <option value="">All Tags</option>
+
+                @if (Model.Tags != null)
+                {
+                    foreach (var tag in Model.Tags)
+                    {
+                        var selected = Model.TagId != null &&
+                        tag.Id == Model.TagId;
+
+                        <option value="@tag.Id" selected="@selected">
+                            @tag.Name
+                        </option>
+                    }
+                }
+            </select>
+
+            <button type="submit">Search</button>
+
+        </form>
+
+        <!-- Articles -->
+        <div class="articles-list" id="articlesContainer">
+
+            @await Html.PartialAsync("_ArticleRow", Model.Articles)
+
+        </div>
+
+        <div id="loading" style="display:none;text-align:center;margin-top:20px;">
+            <div class="spinner-border text-secondary"></div>
+        </div>
+
+        <div id="scrollSentinel"></div>
+
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+
+        document.getElementById("categoryDropdown")
+        .addEventListener("change", function () {
+
+            const categoryId = this.value;
+            const tagDropdown = document.getElementById("tagDropdown");
+
+            tagDropdown.innerHTML = '<option value="">All Tags</option>';
+
+            if (!categoryId) return;
+
+            fetch(`/Articles/GetTagsByCategory?categoryId=${categoryId}`)
+            .then(response => response.json())
+            .then(data => {
+
+                data.forEach(tag => {
+
+                    const option = document.createElement("option");
+
+                    option.value = tag.id;
+                    option.text = tag.name;
+
+                    tagDropdown.appendChild(option);
+
+                });
+
+            })
+            .catch(error => console.error("Error:", error));
+
+        });
+
+    </script>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            let currentPage = @Model.CurrentPage;
+            let totalPages = @Model.TotalPages;
+            let isLoading = false;
+
+            const sentinel = document.getElementById("scrollSentinel");
+            const loading = document.getElementById("loading");
+            const container = document.getElementById("articlesContainer");
+
+            const observer = new IntersectionObserver(async (entries) => {
+
+                if (!entries[0].isIntersecting) return;
+
+                if (isLoading) return;
+
+                if (currentPage >= totalPages) {
+
+                    observer.disconnect();
+
+                    loading.innerText = "No more articles to load.";
+
+                    return;
+                }
+
+                isLoading = true;
+
+                currentPage++;
+
+                loading.style.display = "block";
+
+                try {
+
+                    const response = await fetch(`/Articles/LoadMore?page=${currentPage}&search=@Model.Search&categoryId=@Model.CategoryId&tagId=@Model.TagId`);
+
+                    const html = await response.text();
+
+                    if (html.trim() !== "") {
+
+                        const temp = document.createElement("div");
+
+                        temp.innerHTML = html;
+
+                        const items = temp.children;
+
+                        Array.from(items).forEach(item => {
+
+                            item.style.opacity = "0";
+
+                            container.appendChild(item);
+
+                            setTimeout(() => {
+
+                                item.style.transition = "opacity 0.4s ease";
+                                item.style.opacity = "1";
+
+                            }, 50);
+
+                        });
+
+                    }
+
+                }
+                catch (error) {
+
+                    console.error("Error loading articles:", error);
+
+                }
+                finally {
+
+                    loading.style.display = "none";
+                    isLoading = false;
+
+                }
+
+            }, {
+                rootMargin: "200px"
+            });
+
+            observer.observe(sentinel);
+
+        });
+
+    </script>
+
+
+}
+

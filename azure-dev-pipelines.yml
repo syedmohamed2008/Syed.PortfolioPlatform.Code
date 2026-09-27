@@ -1,0 +1,110 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - Dev
+  paths:
+    exclude:
+      - azure-dev-pipelines.yml
+
+pr: none
+
+pool:
+  name: Default
+
+variables:
+  buildConfiguration: 'Release'
+  MSBUILDDISABLENODEREUSE: '1'
+
+stages:
+- stage: Build
+  displayName: Build Solution
+  jobs:
+  - job: BuildJob
+    steps:
+    - checkout: self
+      clean: true
+
+    # 1. Map the deep path to a short Virtual Drive
+    - powershell: |
+        $currentPath = Get-Location
+        if (Test-Path Z:) { subst Z: /D } # Clean up if Z: exists
+        subst Z: "$currentPath"
+        Write-Host "Mapped $currentPath to Z:\"
+      displayName: 'Map Long Path to Z: Drive'
+
+    # 2. Run the Restore and Publish from the Virtual Drive
+    - script: |
+        Z:
+        dotnet restore
+        
+        echo "Publishing API..."
+        dotnet publish Syed.PortfolioPlatform.API/Syed.PortfolioPlatform.API.csproj --configuration $(buildConfiguration) --output "$(Build.ArtifactStagingDirectory)/api" --no-restore
+        
+        echo "Publishing MVC..."
+        dotnet publish Syed.PortfolioPlatform.Web/Syed.PortfolioPlatform.Web.csproj --configuration $(buildConfiguration) --output "$(Build.ArtifactStagingDirectory)/web" --no-restore
+        
+        echo "Publishing Function..."
+        # Running publish directly on Z:\ avoids the path limit for WorkerExtensions
+        dotnet publish Syed.PortfolioPlatform.Functions.Notifications/Syed.PortfolioPlatform.Functions.Notifications.csproj --configuration $(buildConfiguration) --output "$(Build.ArtifactStagingDirectory)/function" --no-restore
+      displayName: 'Build and Publish on Z: Drive'
+
+    # 3. Clean up the Virtual Drive (Always run even if build fails)
+    - powershell: |
+        subst Z: /D
+        Write-Host "Unmapped Z: Drive"
+      displayName: 'Unmap Z: Drive'
+      condition: always()
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: 'drop'
+
+# ======================
+# DEPLOY STAGES (Unchanged)
+# ======================
+- stage: Deploy_API
+  displayName: Deploy API to Azure
+  dependsOn: Build
+  jobs:
+  - job: DeployAPI
+    steps:
+    - download: current
+      artifact: drop
+    - task: AzureWebApp@1
+      inputs:
+        azureSubscription: 'AzureServiceConnection'
+        appType: webApp
+        appName: 'syedportfolio-api'
+        package: '$(Pipeline.Workspace)/drop/api'
+
+- stage: Deploy_MVC
+  displayName: Deploy MVC to Azure
+  dependsOn: Build
+  jobs:
+  - job: DeployMVC
+    steps:
+    - download: current
+      artifact: drop
+    - task: AzureWebApp@1
+      inputs:
+        azureSubscription: 'AzureServiceConnection'
+        appType: webApp
+        appName: 'syedportfolio-web'
+        package: '$(Pipeline.Workspace)/drop/web'
+
+- stage: Deploy_Function
+  displayName: Deploy Function to Azure
+  dependsOn: Build
+  jobs:
+  - job: DeployFunction
+    steps:
+    - download: current
+      artifact: drop
+    - task: AzureFunctionApp@1
+      inputs:
+        azureSubscription: 'AzureServiceConnection'
+        appType: functionApp
+        appName: 'syed-portfolio-functions'
+        package: '$(Pipeline.Workspace)/drop/function'

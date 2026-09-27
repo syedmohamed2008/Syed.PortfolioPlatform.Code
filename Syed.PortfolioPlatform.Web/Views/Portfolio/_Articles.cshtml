@@ -1,0 +1,89 @@
+﻿@model HomeViewModel
+<section class="py-5">
+    <div class="container">
+
+        <h3 class="section-title mb-5">
+            Latest Articles
+        </h3>
+
+        <p>Practical tutorials, production-oriented examples, and interview guidance covering .NET, Web API, SQL Server, Angular, Azure, and software architecture.</p>
+
+        <div class="row g-4">
+
+            @foreach (var article in Model.LatestArticles)
+            {
+                <div class="col-md-4">
+
+                    <div class="article-card">
+
+                        <!-- Image (Optional - If You Have Image) -->
+                        @if (!string.IsNullOrEmpty(article.ImageUrl))
+                        {
+                            <div class="article-image">
+                                <img src="@article.ImageUrl" />
+                            </div>
+                        }
+
+                        <div class="article-body">
+
+                            <!-- Top Meta -->
+                            <div class="article-meta-top">
+                                <span class="article-category">
+                                    @article.CategoryName
+                                </span>
+
+                                <small>
+                                    @article.CreatedOn.ToString("MMM dd, yyyy")
+                                </small>
+                            </div>
+
+                            <!-- Title -->
+                            <h5>
+                                @article.Title
+                            </h5>
+
+                            <!-- Content Preview -->
+                            <p>
+                                @*  @Html.Raw(article.Content.Length > 150
+                                                        ? article.Content.Substring(0, 150) + "..."
+                                                        : article.Content) *@
+                                @{
+                                    var plainText = System.Text.RegularExpressions.Regex
+                                    .Replace(article.Content ?? "", "<.*?>", "");
+
+                                    var summary = plainText.Length > 150
+                                    ? plainText.Substring(0, 150) + "..."
+                                    : plainText;
+                                }
+
+                                <p class="article-row-summary">
+                                    @summary
+                                </p>
+                            </p>
+
+                            <!-- Read More -->
+                            @*  <a href="/Articles/Details/@article.Id"
+                           class="article-link">
+
+                            Read Article →
+
+                        </a> *@
+
+                            <a asp-controller="Articles"
+                               asp-action="Details"
+                               asp-route-Slug="@article.Slug"
+                               class="read-more">
+                                Read More →
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+</section>
